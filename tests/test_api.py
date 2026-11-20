@@ -3,7 +3,9 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.main import app, get_db, Base, engine
+from app.main import app, get_db
+from app.models.database import Base
+from app.main import engine
 from app.models.database import Location, Fingerprint, Agent, Scan
 
 # Use in-memory SQLite for tests
@@ -30,7 +32,7 @@ def setup_db():
     Base.metadata.drop_all(bind=test_engine)
 
 
-client = TestClient(app)
+client = TestClient(app, headers={"X-API-Key": "dev-key-change-in-production"})
 
 
 class TestHealth:
